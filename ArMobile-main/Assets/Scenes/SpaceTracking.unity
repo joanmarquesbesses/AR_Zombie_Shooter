@@ -265,7 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastManager: {fileID: 795265325}
   anchorManager: {fileID: 795265331}
-  prefabToPlace: {fileID: 1685128922627226193, guid: bdf2c5368e1886d48968435b26257902,
+  prefabToPlace: {fileID: 6375449512222767039, guid: f4028af46962f6a458e68c5685481275,
     type: 3}
 --- !u!114 &795265333
 MonoBehaviour:
