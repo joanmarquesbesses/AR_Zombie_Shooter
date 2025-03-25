@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 795265330}
   - component: {fileID: 795265332}
   - component: {fileID: 795265333}
+  - component: {fileID: 795265335}
   m_Layer: 0
   m_Name: XR Origin (Mobile AR)
   m_TagString: Untagged
@@ -265,7 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastManager: {fileID: 795265325}
   anchorManager: {fileID: 795265331}
-  prefabToPlace: {fileID: 5168903074918157209, guid: 1e4714cc7ac76be4eabd843fb47bb582,
+  prefabToPlace: {fileID: 1685128922627226193, guid: bdf2c5368e1886d48968435b26257902,
     type: 3}
 --- !u!114 &795265333
 MonoBehaviour:
@@ -297,6 +298,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PointCloudPrefab: {fileID: 1854016325464908, guid: 13bcf77221b7e4f43af6fce60011a78e,
     type: 3}
+--- !u!114 &795265335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795265324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfdf8893ed43f841ae0447d8c06c3e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zombi: {fileID: 5168903074918157209, guid: 1e4714cc7ac76be4eabd843fb47bb582, type: 3}
 --- !u!1 &882039860
 GameObject:
   m_ObjectHideFlags: 0
