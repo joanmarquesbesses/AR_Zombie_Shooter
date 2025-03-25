@@ -26,9 +26,11 @@ public class GameManager : MonoBehaviour
         {
             if (spawn)
             {
-                Instantiate(zombi);
-                Instantiate(zombi, anchors[1].transform);
-                Instantiate(zombi, anchors[2].transform);
+                for (int i = 0; i < anchors.Length; i++)
+                {
+                    GameObject z = Instantiate(zombi);
+                    z.transform.position = anchors[i].transform.position;
+                }
                 spawn = false;
             }
         }
@@ -49,24 +51,20 @@ public class GameManager : MonoBehaviour
             {
                 if (hit.collider.gameObject.name.Contains("Head"))
                 {
-                    ZombieScript zparent = hit.collider.gameObject.GetComponentInParent<ZombieScript>();
-                    if (zparent != null)
+                    ZombieScript enemyScript = hit.collider.gameObject.GetComponentInParent<ZombieScript>();
+                    if (enemyScript != null)
                     {
-                        zparent.HeadShoot(); // Llama a la función pública TakeDamage en el script
+                        enemyScript.HeadShoot(); // Llama a la función pública TakeDamage en el script
                     }
-                    Debug.Log("Head");
-                } else if (hit.collider.gameObject.name.Contains("Body"))
+                }
+                else if (hit.collider.gameObject.name.Contains("Body"))
                 {
-                    ZombieScript enemyScript = hit.collider.gameObject.GetComponent<ZombieScript>();
+                    ZombieScript enemyScript = hit.collider.gameObject.GetComponentInParent<ZombieScript>();
                     if (enemyScript != null)
                     {
                         enemyScript.BodyShoot(); // Llama a la función pública TakeDamage en el script
                     }
-                    Debug.Log("Body");
                 }
-            } else
-            {
-                Debug.Log("Miss");
             }
         }
     }

@@ -340,7 +340,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2912149580350539253}
   - component: {fileID: 6810782798925344192}
-  - component: {fileID: 8415650650048292080}
   m_Layer: 3
   m_Name: zombie
   m_TagString: Enemy
@@ -388,19 +387,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8415650650048292080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2531542173462601551}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95e0f10a9226d3344a3f8d35a9da9924, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!1 &2722146990304029572
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,6 +620,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3170508056672182074}
+  - component: {fileID: 1247193408662237585}
   m_Layer: 3
   m_Name: Zombie
   m_TagString: Enemy
@@ -657,6 +644,18 @@ Transform:
   - {fileID: 2912149580350539253}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1247193408662237585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5168903074918157209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e0f10a9226d3344a3f8d35a9da9924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5235998632362274998
 GameObject:
   m_ObjectHideFlags: 0
