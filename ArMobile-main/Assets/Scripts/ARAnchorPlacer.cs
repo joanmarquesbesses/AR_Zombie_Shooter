@@ -43,11 +43,11 @@ public class ARAnchorPlacer : MonoBehaviour
                 if (anchor != null)
                 {
                     Instantiate(prefabToPlace, anchor.transform);
-                    Debug.Log("Anchor created and prefab placed.");
+                   // Debug.Log("Anchor created and prefab placed.");
                 }
                 else
                 {
-                    Debug.LogWarning("Failed to create anchor.");
+                    //Debug.LogWarning("Failed to create anchor.");
                 }
             }
         }

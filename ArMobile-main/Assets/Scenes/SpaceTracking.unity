@@ -415,7 +415,7 @@ MonoBehaviour:
   zombi: {fileID: 5168903074918157209, guid: 1e4714cc7ac76be4eabd843fb47bb582, type: 3}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!1 &882039860
 GameObject:
   m_ObjectHideFlags: 0
