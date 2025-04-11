@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,24 +6,83 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
+
+public enum GameState
+{
+    MENU,
+    SPAWNERS,
+    START,
+    GAMEPLAY
+}
+
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private GameState state = GameState.MENU;
     private GameObject[] anchors;
     public GameObject zombi;
     private bool spawn = true;
     private GameObject camera;
     public LayerMask enemyLayer;
+
+    private void OnEnable()
+    {
+        CanvasActivator.Instance.OnCanvasActivated += CheckOnCanvas;
+    }
+
+    private void OnDisable()
+    {
+        CanvasActivator.Instance.OnCanvasActivated -= CheckOnCanvas;
+    }
+
+
     void Start()
     {
         camera = GameObject.FindWithTag("MainCamera");
     }
 
-    // Update is called once per frame
     void Update()
     {
+        switch(state)
+        {
+            case GameState.MENU:
+                break;
+
+            case GameState.SPAWNERS:
+                AnchorPlacement();
+                break;
+
+            case GameState.START:
+                break;
+
+            case GameState.GAMEPLAY:
+                GameplayLoop();
+                break;
+
+        }
+    }
+
+    private void AnchorPlacement()
+    {
+        ARAnchorPlacer anchorPlacer = GetComponent<ARAnchorPlacer>();
+        if (!anchorPlacer.isActiveAndEnabled)
+        {
+            anchorPlacer.enabled = true;
+        }
+
+
         anchors = GameObject.FindGameObjectsWithTag("Anchor");
-        if(anchors.Length == 3)
+        if (anchors.Length == 3)
+        {
+            ChangeState(GameState.START);
+            anchorPlacer.enabled = false;
+        }
+    }
+
+
+    private void GameplayLoop()
+    {
+        anchors = GameObject.FindGameObjectsWithTag("Anchor");
+        if (anchors.Length == 3)
         {
             if (spawn)
             {
@@ -66,6 +126,50 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private void CheckOnCanvas(bool activated, string name)
+    {
+        switch(name)
+        {
+            case "MainMenu":
+                if (!activated)
+                {
+                    ChangeState(GameState.SPAWNERS);
+                }
+                break;
+            case "Start":
+                break;
+            case "Gameplay":
+                if (activated)
+                {
+                    ChangeState(GameState.GAMEPLAY);
+                }
+                break;
+        }
+    }
+
+    private void ChangeState(GameState gamestate)
+    {
+        state = gamestate;
+
+
+        switch (state)
+        {
+            case GameState.MENU:
+                break;
+
+            case GameState.SPAWNERS:
+                break;
+
+            case GameState.START:
+                CanvasActivator.Instance.SetActiveCanvas("Start", true);
+                break;
+
+            case GameState.GAMEPLAY:
+                break;
+
         }
     }
 }
