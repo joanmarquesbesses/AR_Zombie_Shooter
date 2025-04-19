@@ -156,19 +156,16 @@ MonoBehaviour:
   canvasControls:
   - name: MainMenu
     canvas: {fileID: 908400338}
-    activationKey: 0
     activationButtons: []
     deactivationButtons:
     - {fileID: 4626342864298838232}
   - name: Start
     canvas: {fileID: 504722406}
-    activationKey: 0
     activationButtons: []
     deactivationButtons:
     - {fileID: 207705423}
   - name: Gameplay
     canvas: {fileID: 504722406}
-    activationKey: 0
     activationButtons:
     - {fileID: 207705423}
     deactivationButtons: []
@@ -301,7 +298,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 207705424}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 503874192}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 504722406}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &207705424
 MonoBehaviour:
   m_ObjectHideFlags: 0
