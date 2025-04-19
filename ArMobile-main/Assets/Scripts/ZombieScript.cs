@@ -1,43 +1,90 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ZombieScript : MonoBehaviour
 {
-    private Transform target;
-    private int lives = 3;
-    private Animator anim;
+    [Header("Movement")]
+    public float moveSpeed = 0.5f;
+    public float attackRange = 0.1f;
 
-    // Start is called before the first frame update
+    [Header("Attack")]
+    public float attackInterval = 1f;
+    public int attackDamage = 1;
+
+    private Transform target;
+    private Animator anim;
+    private int lives = 3;
+    private bool isAttacking = false;
+
     void Start()
     {
-        target = GameObject.FindWithTag("MainCamera").transform;
-        anim = transform.Find("zombie").GetComponent<Animator>();
+        GameObject camObj = GameObject.FindWithTag("MainCamera");
+        if (camObj != null)
+            target = camObj.transform;
+        else
+            Debug.LogError("ZombieScript: No MainCamera found.");
+
+        Transform zombieChild = transform.Find("zombie");
+        if (zombieChild != null)
+            anim = zombieChild.GetComponent<Animator>();
+        else
+            Debug.LogError("ZombieScript: No child named 'zombie'.");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        transform.LookAt(target);
-        transform.Rotate(0f, 180f, 0f);
-        transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
-        transform.position += -transform.forward * Time.deltaTime * 0.1f;
-        if(lives <= 0)
+        if (target == null) return;
+
+        float distance = Vector3.Distance(transform.position, target.position);
+
+        if (distance > attackRange)
         {
-            Destroy(gameObject);
+            if (isAttacking)
+            {
+                StopAllCoroutines();
+                isAttacking = false;
+            }
+
+            transform.LookAt(target);
+            transform.Rotate(0f, 180f, 0f);
+            transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+            transform.position += -transform.forward * Time.deltaTime * 0.1f;
         }
+        else if (!isAttacking)
+        {
+            StartCoroutine(AttackRoutine());
+        }
+
+        if (lives <= 0)
+            Destroy(gameObject);
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
+        while (true)
+        {
+            if (anim != null) anim.SetTrigger("Shoot");
+
+            GameManager.Instance.TakeDamage(attackDamage);
+
+            yield return new WaitForSeconds(attackInterval);
+
+            if (Vector3.Distance(transform.position, target.position) > attackRange)
+                break;
+        }
+        isAttacking = false;
     }
 
     public void BodyShoot()
     {
         lives -= 1;
-        anim.SetTrigger("Shoot");
-        Debug.Log("Body");
+        Debug.Log($"Body shot: lives left = {lives}");
     }
 
     public void HeadShoot()
     {
         lives -= 2;
-        anim.SetTrigger("Shoot");
+        Debug.Log($"Head shot: lives left = {lives}");
     }
 }

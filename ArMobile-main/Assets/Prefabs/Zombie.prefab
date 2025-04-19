@@ -656,6 +656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e0f10a9226d3344a3f8d35a9da9924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 0.5
+  attackRange: 0.1
+  attackInterval: 1
+  attackDamage: 1
 --- !u!1 &5235998632362274998
 GameObject:
   m_ObjectHideFlags: 0
