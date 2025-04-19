@@ -216,7 +216,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8
-  playerLives: 5
+  playerLives: 50
   invulnerabilityTime: 1
 --- !u!1 &207705421
 GameObject:
