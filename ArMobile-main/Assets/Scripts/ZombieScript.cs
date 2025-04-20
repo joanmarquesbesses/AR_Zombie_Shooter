@@ -14,6 +14,7 @@ public class ZombieScript : MonoBehaviour
     private Transform target;
     private Animator anim;
     private int lives = 3;
+    public int pointsWorth = 5;
     private bool isAttacking = false;
 
     void Start()
@@ -56,6 +57,7 @@ public class ZombieScript : MonoBehaviour
         }
 
         if (lives <= 0)
+            //GameManager.Instance.AddPoints(pointsWorth);
             Destroy(gameObject);
     }
 

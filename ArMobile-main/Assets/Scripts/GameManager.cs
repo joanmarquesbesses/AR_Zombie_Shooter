@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -25,9 +26,16 @@ public class GameManager : MonoBehaviour
     private bool spawn = true;
     private GameObject camera;
 
-    public int playerLives = 50;
+    public int playerLives = 5;
     public float invulnerabilityTime = 1f;
     private bool canTakeDamage = true;
+
+    public float spawnInterval = 5f;
+    private float spawnTimer;
+    private bool initialSpawnDone = false;
+
+    public Text scoreText;
+    private int currentScore = 0;
 
     private void Awake()
     {
@@ -55,6 +63,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         camera = GameObject.FindWithTag("MainCamera");
+        spawnTimer = spawnInterval;
+        UpdateScoreUI();
     }
 
     void Update()
@@ -122,6 +132,16 @@ public class GameManager : MonoBehaviour
             spawn = false;
         }
 
+        if (!spawn)
+        {
+            spawnTimer += Time.deltaTime;
+            if (spawnTimer >= spawnInterval)
+            {
+                spawn = true;
+                spawnTimer = 0;
+            }
+        }
+
         if (Pointer.current.press.wasPressedThisFrame)
         {
             Shoot();
@@ -139,9 +159,16 @@ public class GameManager : MonoBehaviour
                 if (enemyScript != null)
                 {
                     if (hit.collider.gameObject.name.Contains("Head"))
+                    {
                         enemyScript.HeadShoot();
+                        AddPoints(10);
+
+                    }
                     else if (hit.collider.gameObject.name.Contains("Body"))
+                    {
                         enemyScript.BodyShoot();
+                        AddPoints(5);
+                    }
                 }
             }
         }
@@ -170,6 +197,18 @@ public class GameManager : MonoBehaviour
         canTakeDamage = false;
         yield return new WaitForSeconds(invulnerabilityTime);
         canTakeDamage = true;
+    }
+
+    public void AddPoints(int points)
+    {
+        currentScore += points;
+        UpdateScoreUI();
+    }
+
+    void UpdateScoreUI()
+    {
+        if (scoreText != null)
+            scoreText.text = "Score: " + currentScore;
     }
 
     private void GameOver()
