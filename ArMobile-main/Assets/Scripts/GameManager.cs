@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        CheckFreeze();
         switch (state)
         {
             case GameState.MENU:
@@ -70,6 +72,19 @@ public class GameManager : MonoBehaviour
             case GameState.GAMEPLAY:
                 GameplayLoop();
                 break;
+        }
+    }
+
+    private void CheckFreeze()
+    {
+        if (CanvasActivator.Instance.IsCanvasActive("PauseMenu"))
+        {
+            Time.timeScale = 0f;
+            return;
+        }
+        else
+        {
+            Time.timeScale = 1f;
         }
     }
 
@@ -91,6 +106,11 @@ public class GameManager : MonoBehaviour
 
     private void GameplayLoop()
     {
+        if (CanvasActivator.Instance.IsCanvasActive("PauseMenu"))
+        {
+            return;
+        }
+
         anchors = GameObject.FindGameObjectsWithTag("Anchor");
         if (anchors.Length == 3 && spawn)
         {

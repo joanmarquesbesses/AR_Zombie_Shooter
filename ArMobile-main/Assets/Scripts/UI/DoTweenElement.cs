@@ -27,6 +27,8 @@ public class DoTweenElement : MonoBehaviour
         public float delay = 0f;
         [ConditionalField(nameof(enabled))]
         public Ease ease = Ease.OutBack;
+        [ConditionalField(nameof(enabled))]
+        public bool ignoreTimeScale = false;
 
         #region Spawn Effects
         [ConditionalField(nameof(effectType), false, SpawnEffectType.Scale)]
@@ -217,38 +219,44 @@ public class DoTweenElement : MonoBehaviour
             case SpawnEffectType.Scale:
                 rectTransform.DOBlendableScaleBy(settings.targetScale, settings.duration)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Rotate:
                 rectTransform.DOBlendableRotateBy(settings.rotationAngle, settings.duration, RotateMode.FastBeyond360)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Vibrate:
                 rectTransform.DOShakePosition(settings.duration, settings.vibrationIntensity, settings.vibrato)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Bounce:
                 rectTransform.DOBlendableLocalMoveBy(new Vector3(initialPosition.x, initialPosition.y + settings.bounceHeight, initialPosition.z), settings.duration / 2)
                              .SetEase(Ease.OutQuad)
                              .SetLoops(2, LoopType.Yoyo)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Shake:
                 rectTransform.DOShakeScale(settings.duration, settings.shakeStrength, settings.shakeVibrato)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Move:
                 rectTransform.DOBlendableLocalMoveBy(settings.targetLocation, settings.duration)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.ColorChange:
@@ -257,7 +265,8 @@ public class DoTweenElement : MonoBehaviour
                 {
                     renderer.material.DOBlendableColor(settings.targetColor, settings.duration)
                                      .SetEase(settings.ease)
-                                     .SetDelay(settings.delay);
+                                     .SetDelay(settings.delay)
+                                     .SetUpdate(settings.ignoreTimeScale);
                 }
                 break;
 
@@ -265,14 +274,16 @@ public class DoTweenElement : MonoBehaviour
                 rectTransform.localPosition = initialPosition + settings.offset;
                 rectTransform.DOBlendableLocalMoveBy(-settings.offset, settings.duration)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.ReturnScale:
                 rectTransform.localScale = Vector3.zero;
                 rectTransform.DOBlendableScaleBy(initialScale, settings.duration)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
             case SpawnEffectType.FadeIn:
                 var canvasGroup = GetComponent<CanvasGroup>();
@@ -281,7 +292,8 @@ public class DoTweenElement : MonoBehaviour
                     canvasGroup.alpha = 0;
                     canvasGroup.DOFade(1, settings.duration)
                                .SetEase(settings.ease)
-                               .SetDelay(settings.delay);
+                               .SetDelay(settings.delay)
+                               .SetUpdate(settings.ignoreTimeScale);
                 }
                 break;
 
@@ -289,28 +301,33 @@ public class DoTweenElement : MonoBehaviour
                 rectTransform.DOBlendableScaleBy(initialScale * settings.pulseScale - initialScale, settings.duration / 2)
                              .SetEase(settings.ease)
                              .SetLoops(-1, LoopType.Yoyo)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Spin:
                 rectTransform.DOBlendableRotateBy(new Vector3(0, 0, settings.spinSpeed), settings.duration, RotateMode.FastBeyond360)
                              .SetEase(settings.ease)
                              .SetLoops(-1, LoopType.Incremental)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Wave:
                 rectTransform.DOBlendableLocalMoveBy(new Vector3(0, settings.waveHeight, 0), settings.duration / 2)
                              .SetEase(settings.ease)
                              .SetLoops(-1, LoopType.Yoyo)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case SpawnEffectType.Flip:
                 rectTransform.DOBlendableScaleBy(new Vector3(-1, 1, 1), settings.duration / 2)
                              .SetEase(settings.ease)
+                             .SetUpdate(settings.ignoreTimeScale)
                              .OnComplete(() => rectTransform.DOBlendableScaleBy(new Vector3(1, 1, 1), settings.duration / 2)
-                             .SetEase(settings.ease));
+                             .SetEase(settings.ease)
+                             .SetUpdate(settings.ignoreTimeScale));
                 break;
 
             #endregion
@@ -320,28 +337,32 @@ public class DoTweenElement : MonoBehaviour
                 rectTransform.DOBlendableLocalMoveBy(new Vector3(0, settings.danceHeight, 0), settings.duration / 2)
                              .SetEase(settings.ease)
                              .SetDelay(settings.delay)
-                             .SetLoops(-1, LoopType.Yoyo);
+                             .SetLoops(-1, LoopType.Yoyo)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case UpdateEffectType.Spin:
                 rectTransform.DOBlendableRotateBy(new Vector3(0, 0, settings.updateSpinSpeed), settings.duration, RotateMode.FastBeyond360)
                              .SetEase(settings.ease)
                              .SetLoops(-1, LoopType.Incremental)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case UpdateEffectType.Wave:
                 rectTransform.DOBlendableLocalMoveBy(new Vector3(0, settings.updateWaveHeight, 0), settings.duration / 2)
                              .SetEase(settings.ease)
                              .SetLoops(-1, LoopType.Yoyo)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
 
             case UpdateEffectType.RotateTwice:
                 rectTransform.DOBlendableRotateBy(new Vector3(0, 0, settings.RotateByAmount), settings.duration / 2, RotateMode.FastBeyond360)
                              .SetEase(settings.ease)
                              .SetDelay(settings.delay)
-                             .SetLoops(-1, LoopType.Yoyo);
+                             .SetLoops(-1, LoopType.Yoyo)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
             #endregion
 
@@ -352,17 +373,18 @@ public class DoTweenElement : MonoBehaviour
                 {
                     canvasGroupEnd.DOFade(0, settings.duration)
                                   .SetEase(settings.ease)
-                                  .SetDelay(settings.delay);
+                                  .SetDelay(settings.delay)
+                                  .SetUpdate(settings.ignoreTimeScale);
                 }
                 break;
 
             case EndEffectType.Shrink:
                 rectTransform.DOBlendableScaleBy(-initialScale, settings.duration)
                              .SetEase(settings.ease)
-                             .SetDelay(settings.delay);
+                             .SetDelay(settings.delay)
+                             .SetUpdate(settings.ignoreTimeScale);
                 break;
             #endregion
-
 
             case SpawnEffectType.None:
             case UpdateEffectType.None:
