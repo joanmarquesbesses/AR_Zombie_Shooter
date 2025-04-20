@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.SocialPlatforms.Impl;
 
 public enum GameState
 {
@@ -34,7 +37,10 @@ public class GameManager : MonoBehaviour
     private float spawnTimer;
     private bool initialSpawnDone = false;
 
-    public Text scoreText;
+    public TMP_Text scoreText;
+    public TMP_Text scoreTextShadow;
+    public float typeTime = 0.1f;
+    private int visualScore = 0;
     private int currentScore = 0;
 
     private void Awake()
@@ -64,7 +70,8 @@ public class GameManager : MonoBehaviour
     {
         camera = GameObject.FindWithTag("MainCamera");
         spawnTimer = spawnInterval;
-        UpdateScoreUI();
+        scoreText.text = currentScore.ToString();
+        scoreTextShadow.text = currentScore.ToString();
     }
 
     void Update()
@@ -202,13 +209,19 @@ public class GameManager : MonoBehaviour
     public void AddPoints(int points)
     {
         currentScore += points;
-        UpdateScoreUI();
+        StartCoroutine(TypeScore(points));
     }
 
-    void UpdateScoreUI()
+
+    IEnumerator TypeScore(int pointsToAdd)
     {
-        if (scoreText != null)
-            scoreText.text = "Score: " + currentScore;
+        while (visualScore < currentScore)
+        {
+            visualScore += 1;
+            scoreText.text = visualScore.ToString();
+            scoreTextShadow.text = visualScore.ToString();
+            yield return new WaitForSeconds(typeTime);
+        }
     }
 
     private void GameOver()
