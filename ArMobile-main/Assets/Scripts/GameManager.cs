@@ -158,6 +158,12 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.MENU);
     }
 
+    public void QuitApp()
+    {
+        Application.Quit();
+        Debug.Log("Application Quit");
+    }
+
     private void CheckOnCanvas(bool activated, string name)
     {
         switch (name)
