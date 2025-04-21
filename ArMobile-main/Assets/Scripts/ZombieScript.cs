@@ -11,6 +11,13 @@ public class ZombieScript : MonoBehaviour
     public float attackInterval = 1f;
     public int attackDamage = 1;
 
+    [Header("Audio")]
+    private AudioSource audioSource;
+    public AudioClip spawnSFX;
+    public AudioClip[] idleSounds;
+    public AudioClip deadSFX;
+    public float idleSoundInterval = 5f;
+
     private Transform target;
     private Animator anim;
     private int lives = 3;
@@ -30,6 +37,33 @@ public class ZombieScript : MonoBehaviour
             anim = zombieChild.GetComponent<Animator>();
         else
             Debug.LogError("ZombieScript: No child named 'zombie'.");
+
+        idleSoundInterval = Random.Range(2f, 5f);
+
+        audioSource = GetComponent<AudioSource>();
+
+        if (spawnSFX != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(spawnSFX);
+        }
+
+        if (idleSounds.Length > 0 && audioSource != null)
+        {
+            StartCoroutine(IdleSoundRoutine());
+        }
+    }
+
+    private IEnumerator IdleSoundRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(idleSoundInterval);
+            if (idleSounds.Length > 0)
+            {
+                AudioClip randomClip = idleSounds[Random.Range(0, idleSounds.Length)];
+                audioSource.PlayOneShot(randomClip);
+            }
+        }
     }
 
     void Update()
@@ -57,8 +91,11 @@ public class ZombieScript : MonoBehaviour
         }
 
         if (lives <= 0)
+        {
             //GameManager.Instance.AddPoints(pointsWorth);
+            audioSource.PlayOneShot(deadSFX);
             Destroy(gameObject);
+        }
     }
 
     private IEnumerator AttackRoutine()

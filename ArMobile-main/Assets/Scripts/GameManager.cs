@@ -9,6 +9,7 @@ using UnityEngine.XR.ARSubsystems;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UIElements;
 
 public enum GameState
 {
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     private GameState state = GameState.MENU;
     private GameObject[] anchors;
     public GameObject zombi;
+    public GameObject TombstoneCandles;
     public LayerMask enemyLayer;
     private bool spawn = true;
     private GameObject camera;
@@ -44,6 +46,10 @@ public class GameManager : MonoBehaviour
     private int visualScore = 0;
     private int currentScore = 0;
 
+    private AudioSource audioSource;
+    public AudioClip menuMusic;
+    public AudioClip gameMusic;
+
     private void Awake()
     {
         if (Instance == null)
@@ -55,6 +61,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -67,12 +74,21 @@ public class GameManager : MonoBehaviour
         CanvasActivator.Instance.OnCanvasActivated -= CheckOnCanvas;
     }
 
+    public void PlayMusic(AudioClip clip)
+    {
+        if (audioSource.clip == clip) return;
+
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
+
     void Start()
     {
         camera = GameObject.FindWithTag("MainCamera");
         spawnTimer = spawnInterval;
         scoreText.text = currentScore.ToString();
         scoreTextShadow.text = currentScore.ToString();
+        PlayMusic(menuMusic);
     }
 
     void Update()
@@ -88,6 +104,7 @@ public class GameManager : MonoBehaviour
             case GameState.START:
                 break;
             case GameState.GAMEPLAY:
+                PlayMusic(gameMusic);
                 GameplayLoop();
                 break;
         }
@@ -115,8 +132,26 @@ public class GameManager : MonoBehaviour
         }
 
         anchors = GameObject.FindGameObjectsWithTag("Anchor");
-        if (anchors.Length == 3)
+
+        if (anchors.Length == 1)
         {
+            GameObject t = Instantiate(TombstoneCandles, anchors[0].transform.position, Quaternion.identity);
+            t.transform.LookAt(camera.transform.position);
+            t.transform.rotation = Quaternion.Euler(0f, t.transform.rotation.eulerAngles.y, 0f);
+            ChangeState(GameState.SPAWNERS);
+        }
+        else if (anchors.Length == 2)
+        {
+            GameObject t = Instantiate(TombstoneCandles, anchors[1].transform.position, Quaternion.identity);
+            t.transform.LookAt(camera.transform.position);
+            t.transform.rotation = Quaternion.Euler(0f, t.transform.rotation.eulerAngles.y, 0f);
+            ChangeState(GameState.SPAWNERS);
+        }
+        else if (anchors.Length == 3)
+        {
+            GameObject t = Instantiate(TombstoneCandles, anchors[2].transform.position, Quaternion.identity);
+            t.transform.LookAt(camera.transform.position);
+            t.transform.rotation = Quaternion.Euler(0f, t.transform.rotation.eulerAngles.y, 0f);
             ChangeState(GameState.START);
             anchorPlacer.enabled = false;
         }
