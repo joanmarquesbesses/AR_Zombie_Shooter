@@ -15,7 +15,8 @@ public enum GameState
     MENU,
     SPAWNERS,
     START,
-    GAMEPLAY
+    GAMEPLAY,
+    GAMEOVER
 }
 
 public class GameManager : MonoBehaviour
@@ -94,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckFreeze()
     {
-        if (CanvasActivator.Instance.IsCanvasActive("PauseMenu"))
+        if (CanvasActivator.Instance.IsCanvasActive("PauseMenu") || state == GameState.GAMEOVER)
         {
             Time.timeScale = 0f;
             return;
@@ -227,7 +228,9 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game Over!");
-        ChangeState(GameState.MENU);
+        CanvasActivator.Instance.SetActiveCanvas("GameOver", true);
+        Time.timeScale = 0f;
+        ChangeState(GameState.GAMEOVER);
     }
 
     public void QuitApp()
